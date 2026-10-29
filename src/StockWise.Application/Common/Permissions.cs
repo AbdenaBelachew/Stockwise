@@ -65,7 +65,7 @@ public static class Permissions
         ["Storekeeper"] =
         [
             ProductsRead, WarehousesRead, InventoryRead, InventoryAdjust, InventoryTransfer,
-            InventoryCount, ReceiptsCreate, SuppliersRead, PurchaseOrdersRead, ReportsRead, NotificationsRead
+            InventoryCount, ReceiptsCreate, SuppliersRead, PurchaseOrdersRead, NotificationsRead
         ],
         ["Sales / Read-Only"] =
         [

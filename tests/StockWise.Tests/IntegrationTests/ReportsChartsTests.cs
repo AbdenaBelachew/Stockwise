@@ -58,8 +58,9 @@ public class ReportsChartsTests
         var storekeeperRole = roles.EnumerateArray().First(r => r.GetProperty("name").GetString() == "Storekeeper");
         var invite = await owner.PostJsonAsync("/api/v1/organizations/current/invitations",
             new { email = $"inv-{suffix}@t.local", roleId = storekeeperRole.GetProperty("id").GetString() });
-        await invited.PostJsonAsync("/api/v1/invitations/accept",
+        var accept = await invited.PostJsonAsync("/api/v1/invitations/accept",
             new { token = invite.GetProperty("acceptToken").GetString(), fullName = "Invited", password = "Password123" });
+        invited.DefaultRequestHeaders.Authorization = new("Bearer", accept.GetProperty("accessToken").GetString());
 
         var res = await invited.GetAsync("/api/v1/reports/charts");
         Assert.Equal(HttpStatusCode.Forbidden, res.StatusCode);

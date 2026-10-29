@@ -193,7 +193,7 @@ public class InventoryPostingService
         return movement;
     }
 
-    private async Task<InventoryBalance?> LockBalanceAsync(Guid tenantId, Guid productId, Guid warehouseId, CancellationToken ct)
+    private async Task<InventoryBalance> LockBalanceAsync(Guid tenantId, Guid productId, Guid warehouseId, CancellationToken ct)
     {
         // Create the balance row if missing without a race: ON CONFLICT DO NOTHING,
         // then take a row lock so concurrent postings serialize per (product, warehouse).

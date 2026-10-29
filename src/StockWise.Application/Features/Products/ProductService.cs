@@ -372,7 +372,7 @@ public class ProductService
             rows.Add(new ImportRow(rowNumber,
                 csv.GetField("SKU") ?? "",
                 csv.GetField("Name") ?? "",
-                csv.GetField("Category"),
+                csv.GetField("Category") ?? "",
                 csv.GetField("Unit") ?? "pcs",
                 csv.GetField("Barcode"),
                 ParseDecimal(csv.GetField("CostPrice")),
