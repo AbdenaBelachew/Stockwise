@@ -107,4 +107,18 @@ public class AuthAndTenantIsolationTests
         var res = await client.GetAsync("/api/v1/auth/me");
         Assert.Equal(HttpStatusCode.Unauthorized, res.StatusCode);
     }
+
+    [Fact]
+    public async Task Logout_ClearsSession_And_RevokesRefreshToken()
+    {
+        var email = $"logout-{Guid.NewGuid():N}@t.local";
+        var client = await _factory.RegisterAsync(email, "Password123", "Logout Org");
+
+        var logoutRes = await client.PostAsync("/api/v1/auth/logout", null);
+        Assert.Equal(HttpStatusCode.NoContent, logoutRes.StatusCode);
+
+        // Try refreshing with the revoked cookie
+        var refreshRes = await client.PostAsync("/api/v1/auth/refresh", null);
+        Assert.Equal(HttpStatusCode.Unauthorized, refreshRes.StatusCode);
+    }
 }

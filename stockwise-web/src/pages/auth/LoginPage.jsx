@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { Boxes, Loader2 } from 'lucide-react'
@@ -16,6 +16,12 @@ export default function LoginPage() {
     handleSubmit,
     formState: { errors, isSubmitting }
   } = useForm()
+
+  useEffect(() => {
+    if (auth.status === 'authenticated') {
+      navigate('/', { replace: true })
+    }
+  }, [auth.status, navigate])
 
   const onSubmit = async (data) => {
     setServerError(null)

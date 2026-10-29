@@ -59,12 +59,14 @@ export function AuthProvider({ children }) {
   const logout = useCallback(async () => {
     try {
       await api.post('/api/v1/auth/logout', {})
-    } catch {
+    } catch (e) {
       // ignore network errors on logout
+    } finally {
+      clearAuthInfo()
+      localStorage.removeItem('stockwise:warehouse')
+      setMe(null)
+      setStatus('unauthenticated')
     }
-    clearAuthInfo()
-    setMe(null)
-    setStatus('unauthenticated')
   }, [])
 
   const switchOrganization = useCallback(async (orgId) => {

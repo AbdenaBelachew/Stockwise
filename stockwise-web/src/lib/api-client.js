@@ -56,7 +56,7 @@ async function request(path, { method = 'GET', body, formData, signal, retryOn40
     headers,
     body: formData ? formData : body !== undefined ? JSON.stringify(body) : undefined,
     signal,
-    credentials: 'same-origin'
+    credentials: 'include'
   })
 
   if (res.status === 401 && retryOn401 && !path.startsWith('/api/v1/auth/')) {
@@ -89,7 +89,7 @@ export async function tryRefresh() {
   try {
     const res = await fetch('/api/v1/auth/refresh', {
       method: 'POST',
-      credentials: 'same-origin'
+      credentials: 'include'
     })
     if (!res.ok) return false
     const data = await res.json()

@@ -61,6 +61,14 @@ public class AuthController : ControllerBase
     {
         await _auth.LogoutAsync(Request.Cookies[CookieNames.RefreshToken], ct);
         Response.Cookies.Delete(CookieNames.RefreshToken, RefreshCookieOptions());
+        Response.Cookies.Delete(CookieNames.RefreshToken, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = !_env.IsDevelopment(),
+            SameSite = SameSiteMode.Lax,
+            Path = "/"
+        });
+        Response.Cookies.Delete(CookieNames.RefreshToken);
         return NoContent();
     }
 
