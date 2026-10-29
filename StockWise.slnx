@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/StockWise.Api/StockWise.Api.csproj" />
+    <Project Path="src/StockWise.Application/StockWise.Application.csproj" />
+    <Project Path="src/StockWise.Domain/StockWise.Domain.csproj" />
+    <Project Path="src/StockWise.Infrastructure/StockWise.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/StockWise.Tests/StockWise.Tests.csproj" />
+  </Folder>
+</Solution>

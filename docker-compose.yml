@@ -1,0 +1,48 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: stockwise-db
+    environment:
+      POSTGRES_USER: stockwise
+      POSTGRES_PASSWORD: stockwise_dev_pw
+      POSTGRES_DB: stockwise
+    ports:
+      # Host port 5433 to avoid clashing with a locally installed PostgreSQL (5432).
+      - "5433:5432"
+    volumes:
+      - stockwise_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U stockwise -d stockwise"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: src/StockWise.Api/Dockerfile
+    container_name: stockwise-api
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:5000
+      ConnectionStrings__Default: Host=db;Port=5432;Database=stockwise;Username=stockwise;Password=stockwise_dev_pw
+      Jwt__Key: dev-only-stockwise-jwt-signing-key-0123456789abcdef-CHANGE-ME
+      Database__ApplyMigrationsOnStartup: "true"
+    ports:
+      - "5105:5000"
+
+  web:
+    build:
+      context: ./stockwise-web
+      dockerfile: Dockerfile
+    container_name: stockwise-web
+    depends_on:
+      - api
+    ports:
+      - "8080:80"
+
+volumes:
+  stockwise_pgdata:

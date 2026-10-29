@@ -1,0 +1,28 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+testresults/
+
+## Node
+node_modules/
+dist/
+*.local
+
+## IDE
+.vs/
+.vscode/
+.idea/
+
+## OS
+Thumbs.db
+.DS_Store
+
+## Environment / secrets — never commit real credentials
+.env
+!.env.example
+
+## Logs
+logs/
+*.log
