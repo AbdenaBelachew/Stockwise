@@ -56,18 +56,6 @@ cd src/StockWise.Api
 ASPNETCORE_ENVIRONMENT=Development dotnet run -- seed-demo
 ```
 
-This creates a demo organization with products, stock (via real ledger movements),
-a purchase order awaiting approval, and five users — all with the password
-`DemoPassw0rd!`:
-
-| Email                             | Role               |
-| --------------------------------- | ------------------ |
-| `admin@demo.stockwise.local`      | Business Owner     |
-| `manager@demo.stockwise.local`    | Inventory Manager  |
-| `buyer@demo.stockwise.local`      | Procurement Officer|
-| `store@demo.stockwise.local`      | Storekeeper        |
-| `approver@demo.stockwise.local`   | Approver           |
-
 > **Never** run `seed-demo` against a production database. There is no default
 > administrator password anywhere in the product; the first real account is created
 > through the normal sign-up flow.
@@ -89,28 +77,10 @@ dotnet test tests/StockWise.Tests
 docker compose up --build
 ```
 
-| Service | URL                     |
-| ------- | ----------------------- |
-| Web     | http://localhost:8080   |
-| API     | http://localhost:5105   |
-| DB      | localhost:5433          |
-
 Then seed demo data once (from the repo root):
 
 ```bash
 docker compose exec api dotnet StockWise.Api.dll seed-demo
-```
-
-## Configuration
-
-| Setting (env form)              | Purpose                                                        |
-| ------------------------------- | -------------------------------------------------------------- |
-| `ConnectionStrings__Default`    | PostgreSQL connection string.                                  |
-| `Jwt__Key`                      | JWT signing key, **min 32 chars**. Required in production.     |
-| `Jwt__Issuer` / `Jwt__Audience` | Token issuer/audience (defaults `stockwise` / `stockwise-web`).|
-| `Cors__AllowedOrigins__0`       | Frontend origin(s) allowed for CORS.                           |
-| `Database__ApplyMigrationsOnStartup` | Auto-apply migrations (development only — use `dotnet ef database update` in production). |
-| `RateLimiting__AuthPermitLimit` | Auth endpoint rate limit per minute per IP (default 20).       |
 
 `.env.example` files exist at the repo root and in `src/StockWise.Api/` and
 `stockwise-web/`. **Never commit real secrets** — supply them via environment
